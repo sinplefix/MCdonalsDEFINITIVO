@@ -8,7 +8,7 @@ conn = cx_Oracle.connect("inacap_ecommerce/.Inacap.2023..@db20220530152721_high"
 with open("bigmac.png", "rb") as file:
     imagen_data = file.read()
 
-
+# innecesario ahora ;)
 
 
 cursor = conn.cursor()
