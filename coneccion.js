@@ -46,6 +46,7 @@ window.addEventListener('load', () => {
     `;
 
     definitivaHTML.appendChild(definitivaCard);
+    comprar();
   }
 
   fetch('https://g9cd7530b8a8613-ecommerce.adb.sa-santiago-1.oraclecloudapps.com/ords/inacap_ecommerce/mcdonalds3/')
@@ -106,61 +107,68 @@ window.addEventListener('load', () => {
     })
     .catch(() => {});
 
-  function comprar() {
-    const comprarBtn = document.getElementById('comprarBtn');
-    comprarBtn.addEventListener('click', () => {
-      if (carrito.length === 0) {
-        alert('Debe agregar productos al carrito');
-        return;
-      }
-
-      let total = 0;
-      carrito.forEach((producto) => {
-        const { precio, cantidad } = producto;
-        total += precio * cantidad;
+    function comprar() {
+      const comprarBtn = document.getElementById('comprarBtn');
+      comprarBtn.addEventListener('click', () => {
+        if (carrito.length === 0) {
+          alert('Debe agregar productos al carrito');
+          return;
+        }
+    
+        let total = 0;
+        carrito.forEach((producto) => {
+          const { precio, cantidad } = producto;
+          total += precio * cantidad;
+        });
+  
+        mostrarBoleta(carrito);
+    
+        // Vaciar el carrito después de realizar la compra
+        carrito = [];
+        // Actualizar el carrito en la interfaz
+        actualizarCarrito();
       });
-
-      alert(`Total a pagar: $${total}`);
-    });
-  }
-
-  comprar();
+    }
+    
+    function mostrarBoleta(productos) {
+      const boletaContainer = document.getElementById('boletaContainer');
+    
+      // Limpiar el contenido del contenedor
+      boletaContainer.innerHTML = '';
+    
+      // Crear el elemento de la boleta
+      const boletaElement = document.createElement('div');
+      boletaElement.classList.add('boleta');
+    
+      // Crear encabezado de la boleta
+      const encabezadoElement = document.createElement('h2');
+      encabezadoElement.textContent = 'Boleta de Compra';
+      boletaElement.appendChild(encabezadoElement);
+    
+      // Crear la lista de productos
+      const listaElement = document.createElement('ul');
+      productos.forEach(producto => {
+        const itemElement = document.createElement('li');
+        const subtotal = producto.precio * producto.cantidad;
+        itemElement.textContent = `${producto.nombre} - $${producto.precio} x ${producto.cantidad} = $${subtotal}`;
+        listaElement.appendChild(itemElement);
+      });
+      boletaElement.appendChild(listaElement);
+    
+      // Calcular el total
+      const total = productos.reduce((suma, producto) => suma + producto.precio * producto.cantidad, 0);
+    
+      // Crear el elemento para mostrar el total
+      const totalElement = document.createElement('p');
+      totalElement.textContent = 'Total: $' + total;
+      boletaElement.appendChild(totalElement);
+    
+      // Mostrar la boleta en el contenedor
+      boletaContainer.appendChild(boletaElement);
+    }
+        
 });
 
 
 
-
-
-  // window.addEventListener('load', () => {
-//     fetch('https://g9cd7530b8a8613-ecommerce.adb.sa-santiago-1.oraclecloudapps.com/ords/inacap_ecommerce/mcdonalds3/')
-//       .then((resultado) => {
-//         return resultado.json();
-//       })
-//       .then((datos) => {
-//         console.log(datos);
-//         for (let i in datos.items) {
-//           console.log(datos.items[i]);
-//           let imagenURL = `${datos.items[i].imagen}`; // Ruta de la imagen en el servidor
-//           document.getElementById('productos1').innerHTML += `
-//             <div class="col">
-//               <div class="card" style="width: 18rem;">
-//                 <img src="${imagenURL}" class="card-img-top" alt="...">
-//                 <div class="card-body">
-//                   <ul>
-//                     <li><strong>Nombre</strong>: ${datos.items[i].nombre}</li>
-//                     <li><strong>Descripcion</strong>: ${datos.items[i].descripcion}</li>
-//                     <li><strong>Precio $</strong>: ${datos.items[i].precio}</li>
-//                   </ul>
-//                   <div class="card-footer ">
-//                     <button id="shop" type="button" class="btn btn-success justify-content-start">Añadir</button>
-//                     <button id="delete" type="button" class="btn btn-danger justify-content-end">Quitar</button>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           `;
-//         }
-//       })
-//       .catch(() => {});
-//   });
 
