@@ -135,15 +135,20 @@ window.addEventListener('load', () => {
     
       // Limpiar el contenido del contenedor
       boletaContainer.innerHTML = '';
-    
+
       // Crear el elemento de la boleta
       const boletaElement = document.createElement('div');
       boletaElement.classList.add('boleta');
+      
     
       // Crear encabezado de la boleta
       const encabezadoElement = document.createElement('h2');
       encabezadoElement.textContent = 'Boleta de Compra';
       boletaElement.appendChild(encabezadoElement);
+
+      const id = document.createElement('h2');
+      id.textContent = 'ID: ' + Math.floor(Math.random() * 1000000);
+      boletaContainer.appendChild(id);
     
       // Crear la lista de productos
       const listaElement = document.createElement('ul');
@@ -154,7 +159,7 @@ window.addEventListener('load', () => {
         listaElement.appendChild(itemElement);
       });
       boletaElement.appendChild(listaElement);
-    
+      
       // Calcular el total
       const total = productos.reduce((suma, producto) => suma + producto.precio * producto.cantidad, 0);
     
